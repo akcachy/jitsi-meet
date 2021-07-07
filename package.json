@@ -159,6 +159,7 @@
     "validate": "npm ls",
     "start": "make dev",
     "ios": "react-native run-ios",
-    "android": "react-native run-android"
+    "android": "react-native run-android",
+    "debug": "node --inspect app.js"
   }
 }
