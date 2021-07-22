@@ -2,11 +2,11 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion COMPILE_SDK
 
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion MINIMUM_SDK
+        targetSdkVersion TARGET_SDK
     }
 
     buildTypes {
@@ -187,7 +187,7 @@ publishing {
         aarArchive(MavenPublication) {
             groupId 'org.jitsi.react'
             artifactId 'jitsi-meet-sdk'
-            version System.env.OVERRIDE_SDK_VERSION ?: project.sdkVersion
+            version System.env.OVERRIDE_SDK_VERSION ?: jitsisdkVersion
 
             artifact("${project.buildDir}/outputs/aar/${project.name}-release.aar") {
                 extension "aar"

@@ -7,8 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import okio.HashingSink
-import okio.Okio
+import okio.*
 import org.signal.core.util.logging.Log
 import org.thoughtcrime.securesms.crypto.AttachmentSecretProvider
 import org.thoughtcrime.securesms.crypto.ModernDecryptingPartInputStream
@@ -20,6 +19,7 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.lang.Exception
 import java.util.UUID
+import kotlin.jvm.JvmStatic
 
 /**
  * File structure:
@@ -96,18 +96,18 @@ object EmojiFiles {
   fun getMd5(context: Context, version: Version, uuid: UUID): ByteArray? {
     val file = version.getFile(context, uuid)
 
-    try {
-      HashingSink.md5(Okio.blackhole()).use { hashingSink ->
-        Okio.buffer(Okio.source(getInputStream(context, file))).use { source ->
-          source.readAll(hashingSink)
+      try {
+          HashingSink.md5(Okio.blackhole()).use { hashingSink ->
+              Okio.buffer(Okio.source(getInputStream(context, file))).use { source ->
+                  source.readAll(hashingSink)
 
-          return hashingSink.hash().toByteArray()
-        }
+                  return hashingSink.hash().toByteArray()
+              }
+          }
+      } catch (e: Exception) {
+          Log.i(TAG, "Could not read emoji data file md5", e)
+          return null
       }
-    } catch (e: Exception) {
-      Log.i(TAG, "Could not read emoji data file md5", e)
-      return null
-    }
   }
 
   @JvmStatic

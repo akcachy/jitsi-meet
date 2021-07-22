@@ -3,9 +3,10 @@ package org.thoughtcrime.securesms.service.webrtc.state;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.cachy.webrtc.EglBase;
+
 import org.thoughtcrime.securesms.components.webrtc.BroadcastVideoSink;
 import org.thoughtcrime.securesms.ringrtc.Camera;
-import org.webrtc.EglBase;
 
 import java.util.Objects;
 
@@ -13,7 +14,7 @@ import java.util.Objects;
  * Local device video state and infrastructure.
  */
 public final class VideoState {
-  EglBase            eglBase;
+  EglBase eglBase;
   BroadcastVideoSink localSink;
   Camera             camera;
 
