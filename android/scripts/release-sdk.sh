@@ -4,8 +4,14 @@ set -e -u
 
 
 THIS_DIR=$(cd -P "$(dirname "$(readlink "${BASH_SOURCE[0]}" || echo "${BASH_SOURCE[0]}")")" && pwd)
-DEFAULT_MVN_REPO="${THIS_DIR}/../../../jitsi-maven-repository/releases"
+echo "THIS DIR :: "${THIS_DIR}
+# DEFAULT_MVN_REPO="${THIS_DIR}/../../../jitsi-maven-repository/releases"
+DEFAULT_MVN_REPO=${THIS_DIR}/../../../app/libs
+echo "DEFAULT_MVN_REPO :: "${DEFAULT_MVN_REPO}
+
 THE_MVN_REPO=${MVN_REPO:-${1:-$DEFAULT_MVN_REPO}}
+echo "THE_MVN_REPO :: "${THE_MVN_REPO}
+
 MVN_HTTP=0
 DEFAULT_SDK_VERSION=$(grep sdkVersion ${THIS_DIR}/../gradle.properties | cut -d"=" -f2)
 SDK_VERSION=${OVERRIDE_SDK_VERSION:-${DEFAULT_SDK_VERSION}}
@@ -21,6 +27,7 @@ else
 fi
 
 export MVN_REPO=$THE_MVN_REPO
+echo "MVN_REPO :: "${MVN_REPO}
 
 echo "Releasing Jitsi Meet SDK ${SDK_VERSION}"
 echo "Using ${MVN_REPO} as the Maven repo"
@@ -88,9 +95,10 @@ fi
 
 # Now build and publish the Jitsi Meet SDK and its dependencies
 echo "Building and publishing the Jitsi Meet SDK"
+echo ${THIS_DIR}/../
 pushd ${THIS_DIR}/../
-./gradlew clean 
-./gradlew assembleRelease 
+./gradlew clean
+./gradlew assembleRelease
 ./gradlew publish
 popd
 
