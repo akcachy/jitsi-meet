@@ -1,7 +1,7 @@
 // @flow
 import type { Dispatch } from 'redux';
 
-import { pinParticipant } from '../base/participants';
+import { getLocalParticipant, getRemoteParticipants, pinParticipant } from '../base/participants';
 
 import {
     SET_HORIZONTAL_VIEW_DIMENSIONS,
@@ -127,7 +127,8 @@ export function setHorizontalViewDimensions() {
  */
 export function clickOnVideo(n: number) {
     return (dispatch: Function, getState: Function) => {
-        const participants = getState()['features/base/participants'];
+        const state = getState();
+        const participants = [ getLocalParticipant(state), ...getRemoteParticipants(state).values() ];
         const nThParticipant = participants[n];
         const { id, pinned } = nThParticipant;
 
@@ -136,7 +137,7 @@ export function clickOnVideo(n: number) {
 }
 
 /**
- * Sets the volume for a thumnail's audio.
+ * Sets the volume for a thumbnail's audio.
  *
  * @param {string} participantId - The participant ID asociated with the audio.
  * @param {string} volume - The volume level.

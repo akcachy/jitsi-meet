@@ -164,6 +164,11 @@ export const TILE_HORIZONTAL_MARGIN = 4;
 export const TOOLBAR_HEIGHT = 72;
 
 /**
+ * The height of the whole toolbar.
+ */
+export const TOOLBAR_HEIGHT_MOBILE = 60;
+
+/**
  * The size of the horizontal border of a thumbnail.
  *
  * @type {number}
@@ -208,3 +213,10 @@ export const VERTICAL_FILMSTRIP_MIN_HORIZONTAL_MARGIN = 10;
  * @type {number}
  */
 export const HORIZONTAL_FILMSTRIP_MARGIN = 39;
+
+/**
+ * Sets after how many ms to show the thumbnail context menu on long touch on mobile.
+ *
+ * @type {number}
+ */
+export const SHOW_TOOLBAR_CONTEXT_MENU_AFTER = 600;

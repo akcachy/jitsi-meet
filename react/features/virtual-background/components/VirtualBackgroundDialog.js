@@ -188,12 +188,7 @@ function VirtualBackground({
         if (storedImages.length === backgroundsLimit) {
             setStoredImages(storedImages.slice(1));
         }
-        if (!_localFlipX) {
-            dispatch(updateSettings({
-                localFlipX: !_localFlipX
-            }));
-        }
-    }, [ storedImages, _localFlipX ]);
+    }, [ storedImages ]);
 
 
     const enableBlur = useCallback(async () => {
@@ -203,6 +198,8 @@ function VirtualBackground({
             blurValue: 25,
             selectedThumbnail: 'blur'
         });
+        logger.info('"Blur" option setted for virtual background preview!');
+
     }, []);
 
     const enableBlurKeyPress = useCallback(e => {
@@ -219,6 +216,8 @@ function VirtualBackground({
             blurValue: 8,
             selectedThumbnail: 'slight-blur'
         });
+        logger.info('"Slight-blur" option setted for virtual background preview!');
+
     }, []);
 
     const enableSlideBlurKeyPress = useCallback(e => {
@@ -278,6 +277,7 @@ function VirtualBackground({
             dispatch(openDialog(VirtualBackgroundDialog, { initialOptions: newOptions }));
         } else {
             setOptions(newOptions);
+            logger.info('"Desktop-share" option setted for virtual background preview!');
         }
     }, [ dispatch, options ]);
 
@@ -293,6 +293,8 @@ function VirtualBackground({
             enabled: false,
             selectedThumbnail: 'none'
         });
+        logger.info('"None" option setted for virtual background preview!');
+
     }, []);
 
     const removeBackgroundKeyPress = useCallback(e => {
@@ -313,6 +315,7 @@ function VirtualBackground({
                 url: image.src,
                 selectedThumbnail: image.id
             });
+            logger.info('Uploaded image setted for virtual background preview!');
         }
     }, [ storedImages ]);
 
@@ -329,6 +332,8 @@ function VirtualBackground({
                 url,
                 selectedThumbnail: image.id
             });
+            logger.info('Image setted for virtual background preview!');
+
             setLoading(false);
         }
     }, []);
@@ -356,6 +361,8 @@ function VirtualBackground({
                 selectedThumbnail: uuId
             });
         };
+        logger.info('New virtual background image uploaded!');
+
         reader.onerror = () => {
             setLoading(false);
             logger.error('Failed to upload virtual image!');
@@ -390,8 +397,21 @@ function VirtualBackground({
         setLoading(true);
         await dispatch(toggleBackgroundEffect(options, _jitsiTrack));
         await setLoading(false);
+        if (_localFlipX && options.backgroundType === VIRTUAL_BACKGROUND_TYPE.DESKTOP_SHARE) {
+            dispatch(updateSettings({
+                localFlipX: !_localFlipX
+            }));
+        } else {
+
+            // Set x scale to default value.
+            dispatch(updateSettings({
+                localFlipX: true
+            }));
+        }
         dispatch(hideDialog());
-    }, [ dispatch, options ]);
+        logger.info(`Virtual background type: '${typeof options.backgroundType === 'undefined'
+            ? 'none' : options.backgroundType}' applied!`);
+    }, [ dispatch, options, _localFlipX ]);
 
     // Prevent the selection of a new virtual background if it has not been applied by default
     const cancelVirtualBackground = useCallback(async () => {

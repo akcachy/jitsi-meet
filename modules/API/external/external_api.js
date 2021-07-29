@@ -44,6 +44,7 @@ const commands = {
     sendChatMessage: 'send-chat-message',
     sendEndpointTextMessage: 'send-endpoint-text-message',
     sendTones: 'send-tones',
+    setFollowMe: 'set-follow-me',
     setLargeVideoParticipant: 'set-large-video-participant',
     setTileView: 'set-tile-view',
     setVideoQuality: 'set-video-quality',
@@ -59,6 +60,7 @@ const commands = {
     toggleChat: 'toggle-chat',
     toggleFilmStrip: 'toggle-film-strip',
     toggleRaiseHand: 'toggle-raise-hand',
+    toggleShareAudio: 'toggle-share-audio',
     toggleShareScreen: 'toggle-share-screen',
     toggleTileView: 'toggle-tile-view',
     toggleVirtualBackgroundDialog: 'toggle-virtual-background',
@@ -765,6 +767,17 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
      */
     getCurrentDevices() {
         return getCurrentDevices(this._transport);
+    }
+
+    /**
+     * Returns any custom avatars backgrounds.
+     *
+     * @returns {Promise} - Resolves with the list of custom avatar backgrounds.
+     */
+    getCustomAvatarBackgrounds() {
+        return this._transport.sendRequest({
+            name: 'get-custom-avatar-backgrounds'
+        });
     }
 
     /**
